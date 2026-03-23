@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft 365 Portal | microsoft365.Chanh.me</title>
+   
+<link rel="icon" href="Chanh.png" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #111722;
+    --card: #161d2b;
+    --border: #1e2d42;
+    --border-hover: #0078d4;
+    --text: #e8edf5;
+    --muted: #6b7fa0;
+    --accent: #0078d4;
+    --accent2: #50e6ff;
+    --accent3: #ffb900;
+    --client: #107c10;
+    --admin: #0078d4;
+    --monitor: #7719aa;
+    --glow-client: rgba(16,124,16,0.15);
+    --glow-admin: rgba(0,120,212,0.15);
+    --glow-monitor: rgba(119,25,170,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 500px at 10% 20%, rgba(0,120,212,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 600px 400px at 90% 80%, rgba(119,25,170,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 300px at 50% 50%, rgba(80,230,255,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Grid overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,120,212,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,120,212,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,14,20,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+  .logo-icon span {
+    border-radius: 2px;
+    display: block;
+  }
+  .logo-icon span:nth-child(1) { background: #f25022; }
+  .logo-icon span:nth-child(2) { background: #7fba00; }
+  .logo-icon span:nth-child(3) { background: #00a4ef; }
+  .logo-icon span:nth-child(4) { background: #ffb900; }
+
+  .logo-text {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .logo-text span { color: var(--accent); }
+
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-box input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px 7px 36px;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.2s, width 0.3s;
+  }
+  .search-box input:focus { border-color: var(--accent); width: 260px; }
+  .search-box input::placeholder { color: var(--muted); }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    pointer-events: none;
+  }
+
+  .header-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  /* MAIN */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 32px 60px;
+  }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .badge-client {
+    background: rgba(16,124,16,0.1);
+    border-color: rgba(16,124,16,0.3);
+    color: #54b054;
+  }
+  .badge-admin {
+    background: rgba(0,120,212,0.1);
+    border-color: rgba(0,120,212,0.3);
+    color: #50a8f0;
+  }
+  .badge-monitor {
+    background: rgba(119,25,170,0.1);
+    border-color: rgba(119,25,170,0.3);
+    color: #b47de0;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  .section-count {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    gap: 12px;
+  }
+  .grid-2 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Client cards */
+  .section-client .card:hover {
+    border-color: var(--client);
+    box-shadow: 0 8px 32px var(--glow-client), 0 0 0 1px rgba(16,124,16,0.2);
+    background: rgba(16,124,16,0.05);
+  }
+
+  /* Admin cards */
+  .section-admin .card:hover {
+    border-color: var(--admin);
+    box-shadow: 0 8px 32px var(--glow-admin), 0 0 0 1px rgba(0,120,212,0.2);
+    background: rgba(0,120,212,0.05);
+  }
+
+  /* Monitor cards */
+  .section-monitor .card:hover {
+    border-color: var(--monitor);
+    box-shadow: 0 8px 32px var(--glow-monitor), 0 0 0 1px rgba(119,25,170,0.2);
+    background: rgba(119,25,170,0.05);
+  }
+
+  /* Card icon */
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .icon-client { background: rgba(16,124,16,0.15); }
+  .icon-admin { background: rgba(0,120,212,0.15); }
+  .icon-monitor { background: rgba(119,25,170,0.15); }
+  .icon-orange { background: rgba(255,185,0,0.15); }
+  .icon-red { background: rgba(232,17,35,0.15); }
+  .icon-teal { background: rgba(0,178,148,0.15); }
+  .icon-purple { background: rgba(119,25,170,0.15); }
+  .icon-cyan { background: rgba(0,164,239,0.15); }
+  .icon-gray { background: rgba(107,119,160,0.15); }
+
+  /* Card content */
+  .card-content { flex: 1; min-width: 0; }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+  }
+
+  .card-desc {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* Arrow */
+  .card-arrow {
+    color: var(--muted);
+    font-size: 14px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* hidden for search */
+  .card.hidden { display: none; }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 24px 32px 32px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  footer a:hover { color: var(--accent); }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2a3a54; }
+
+  @media (max-width: 640px) {
+    main { padding: 24px 16px 48px; }
+    .hero h1 { font-size: 26px; }
+    header { padding: 0 16px; }
+    .search-box input { width: 140px; }
+    .search-box input:focus { width: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+   <!-- <div class="logo-icon">
+      <span></span><span></span><span></span><span></span>
+    </div>-->
+    <span class="logo-text"><a href="#" style="text-decoration: none;color: #037ccf;">microsoft.Chanh.me</a><span> 365</span> Portal</span>
+ <a href="https://chanh.me" style="text-decoration: none;color: #037ccf;">Chanh.me</a>
+  </div>
+  <div class="header-right">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Search services..." oninput="doSearch(this.value)">
+    </div>
+    <span class="header-tag">IT Services Hub</span>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow">▸ Quick Access Dashboard</div>
+    <h1>Microsoft <em>365</em> Services</h1>
+    <p>All Microsoft portals and admin centers in one place</p>
+  </div>
+
+  <!-- SECTION 1: Client -->
+  <div class="section section-client">
+    <div class="section-header">
+      <div class="section-badge badge-client">
+        <span>👤</span> Microsoft 365 Client
+      </div>
+      <div class="section-line"></div>
+      <span class="section-count">3 services</span>
+    </div>
+    <div class="grid grid-3" id="grid-client">
+
+      <a class="card" href="https://outlook.office.com" target="_blank" rel="noopener" data-name="Outlook Login Email">
+        <div class="card-icon icon-client">📧</div>
+        <div class="card-content">
+          <div class="card-title">Outlook Login</div>
+          <div class="card-desc">outlook.office.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://account.live.com/password/reset" target="_blank" rel="noopener" data-name="Reset Password Microsoft Account">
+        <div class="card-icon icon-orange">🔑</div>
+        <div class="card-content">
+          <div class="card-title">Reset Password</div>
+          <div class="card-desc">Microsoft Account recovery</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://teams.microsoft.com" target="_blank" rel="noopener" data-name="Microsoft Teams Chat Video">
+        <div class="card-icon icon-admin">💬</div>
+        <div class="card-content">
+          <div class="card-title">Microsoft Teams</div>
+          <div class="card-desc">teams.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://admin.microsoft.com" target="_blank" rel="noopener" data-name="Microsoft 365 Admin Center">
+        <div class="card-icon icon-admin">🏢</div>
+        <div class="card-content">
+          <div class="card-title">Microsoft 365 Admin Center</div>
+          <div class="card-desc">admin.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- SECTION 2: Admin -->
+  <div class="section section-admin">
+    <div class="section-header">
+      <div class="section-badge badge-admin">
+        <span>⚙️</span> Microsoft 365 Admin
+      </div>
+      <div class="section-line"></div>
+      <span class="section-count">13 services</span>
+    </div>
+    <div class="grid grid-3" id="grid-admin">
+
+      <a class="card" href="https://admin.microsoft.com" target="_blank" rel="noopener" data-name="Microsoft 365 Admin Center Management">
+        <div class="card-icon icon-admin">🏢</div>
+        <div class="card-content">
+          <div class="card-title">M365 Admin Center</div>
+          <div class="card-desc">admin.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://security.microsoft.com" target="_blank" rel="noopener" data-name="Microsoft Defender Security XDR">
+        <div class="card-icon icon-red">🛡️</div>
+        <div class="card-content">
+          <div class="card-title">Microsoft Defender</div>
+          <div class="card-desc">security.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://compliance.microsoft.com" target="_blank" rel="noopener" data-name="Microsoft Purview Compliance">
+        <div class="card-icon icon-purple">🔍</div>
+        <div class="card-content">
+          <div class="card-title">Microsoft Purview</div>
+          <div class="card-desc">compliance.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://entra.microsoft.com" target="_blank" rel="noopener" data-name="Microsoft Entra Admin Center Azure AD Identity">
+        <div class="card-icon icon-cyan">🪪</div>
+        <div class="card-content">
+          <div class="card-title">Entra Admin Center</div>
+          <div class="card-desc">entra.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://admin.exchange.microsoft.com" target="_blank" rel="noopener" data-name="Exchange Admin Center Email">
+        <div class="card-icon icon-client">📬</div>
+        <div class="card-content">
+          <div class="card-title">Exchange Admin</div>
+          <div class="card-desc">admin.exchange.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://admin.microsoft.com/sharepoint" target="_blank" rel="noopener" data-name="SharePoint Admin Center Sites">
+        <div class="card-icon icon-orange">📁</div>
+        <div class="card-content">
+          <div class="card-title">SharePoint Admin</div>
+          <div class="card-desc">SharePoint admin center</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://admin.teams.microsoft.com" target="_blank" rel="noopener" data-name="Teams Admin Center Meetings">
+        <div class="card-icon icon-admin">💬</div>
+        <div class="card-content">
+          <div class="card-title">Teams Admin Center</div>
+          <div class="card-desc">admin.teams.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://admin.powerplatform.microsoft.com" target="_blank" rel="noopener" data-name="Power Platform Admin Center Dynamics">
+        <div class="card-icon icon-purple">⚡</div>
+        <div class="card-content">
+          <div class="card-title">Power Platform Admin</div>
+          <div class="card-desc">admin.powerplatform.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://config.office.com" target="_blank" rel="noopener" data-name="Microsoft 365 Apps Admin Center Office">
+        <div class="card-icon icon-orange">📊</div>
+        <div class="card-content">
+          <div class="card-title">M365 Apps Admin</div>
+          <div class="card-desc">config.office.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://intune.microsoft.com" target="_blank" rel="noopener" data-name="Microsoft Intune Admin Center MDM Device Management">
+        <div class="card-icon icon-teal">📱</div>
+        <div class="card-content">
+          <div class="card-title">Microsoft Intune</div>
+          <div class="card-desc">intune.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://portal.azure.com" target="_blank" rel="noopener" data-name="Microsoft Azure Portal Cloud">
+        <div class="card-icon icon-admin">☁️</div>
+        <div class="card-content">
+          <div class="card-title">Azure Portal</div>
+          <div class="card-desc">portal.azure.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank" rel="noopener" data-name="Azure Pricing Calculator Cost">
+        <div class="card-icon icon-orange">🧮</div>
+        <div class="card-content">
+          <div class="card-title">Pricing Calculator</div>
+          <div class="card-desc">azure.microsoft.com/pricing</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://intune.microsoft.com/#view/Microsoft_Intune_Enrollment/AutopilotMenuBlade/~/overview" target="_blank" rel="noopener" data-name="Windows Autopilot Deployment Device">
+        <div class="card-icon icon-teal">🚀</div>
+        <div class="card-content">
+          <div class="card-title">Windows Autopilot</div>
+          <div class="card-desc">Intune – Autopilot blade</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: Monitoring -->
+  <div class="section section-monitor">
+    <div class="section-header">
+      <div class="section-badge badge-monitor">
+        <span>📡</span> Monitoring / Status
+      </div>
+      <div class="section-line"></div>
+      <span class="section-count">5 services</span>
+    </div>
+    <div class="grid grid-3" id="grid-monitor">
+
+      <a class="card" href="https://admin.microsoft.com/AdminPortal/Home#/servicehealth" target="_blank" rel="noopener" data-name="Microsoft 365 Admin Service Health Status">
+        <div class="card-icon icon-monitor">🩺</div>
+        <div class="card-content">
+          <div class="card-title">M365 Service Health</div>
+          <div class="card-desc">admin.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://azure.status.microsoft/en-us/status" target="_blank" rel="noopener" data-name="Microsoft Azure Status Uptime">
+        <div class="card-icon icon-admin">☁️</div>
+        <div class="card-content">
+          <div class="card-title">Azure Status</div>
+          <div class="card-desc">azure.status.microsoft</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://connectivity.office.com" target="_blank" rel="noopener" data-name="Microsoft 365 Network Health Status Connectivity">
+        <div class="card-icon icon-monitor">🌐</div>
+        <div class="card-content">
+          <div class="card-title">M365 Network Health</div>
+          <div class="card-desc">connectivity.office.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://downdetector.com/status/microsoft-365/" target="_blank" rel="noopener" data-name="Downdetector Microsoft 365 Outage Reports">
+        <div class="card-icon icon-red">📉</div>
+        <div class="card-content">
+          <div class="card-title">Downdetector</div>
+          <div class="card-desc">downdetector.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://support.fabric.microsoft.com/en-US/support" target="_blank" rel="noopener" data-name="Microsoft Fabric Health Status Data Analytics">
+        <div class="card-icon icon-monitor">🧵</div>
+        <div class="card-content">
+          <div class="card-title">Microsoft Fabric Health</div>
+          <div class="card-desc">support.fabric.microsoft.com</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="logo-icon" style="width:18px;height:18px;gap:2px;">
+    <span style="border-radius:1px;background:#f25022;display:block;"></span>
+    <span style="border-radius:1px;background:#7fba00;display:block;"></span>
+    <span style="border-radius:1px;background:#00a4ef;display:block;"></span>
+    <span style="border-radius:1px;background:#ffb900;display:block;"></span>
+  </div>
+  <span>Microsoft 365 Portal — IT Services Hub</span>
+  <span style="opacity:0.3">·</span>
+  <a href="https://status.office.com" target="_blank">Office Status</a>
+  <span style="opacity:0.3">·</span>
+  <a href="https://docs.microsoft.com" target="_blank">Docs</a>
+</footer>
+
+<script>
+  function doSearch(q) {
+    q = q.toLowerCase().trim();
+    document.querySelectorAll('.card').forEach(card => {
+      const name = (card.dataset.name || '').toLowerCase();
+      const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+      const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+      const match = !q || name.includes(q) || title.includes(q) || desc.includes(q);
+      card.classList.toggle('hidden', !match);
+    });
+
+    // Show/hide sections if all cards hidden
+    document.querySelectorAll('.section').forEach(section => {
+      const visible = section.querySelectorAll('.card:not(.hidden)').length > 0;
+      section.style.display = visible ? '' : 'none';
+    });
+
+    // Reset if empty
+    if (!q) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = '');
+    }
+  }
+</script>
+</body>
+</html>
