@@ -402,12 +402,56 @@
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #2a3a54; }
 
-  @media (max-width: 640px) {
-    main { padding: 24px 16px 48px; }
-    .hero h1 { font-size: 26px; }
-    header { padding: 0 16px; }
-    .search-box input { width: 140px; }
-    .search-box input:focus { width: 180px; }
+  @media (max-width: 768px) {
+    header {
+      padding: 0 12px;
+      height: auto;
+      min-height: 60px;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .logo { flex: 1; min-width: 0; }
+    .logo-text {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-right {
+      width: 100%;
+      margin-left: 0;
+      gap: 8px;
+    }
+    .search-box { flex: 1; }
+    .search-box input {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .search-box input:focus { width: 100%; }
+    .header-tag { display: none; }
+    main { padding: 20px 12px 48px; }
+    .hero h1 { font-size: 24px; }
+    .hero { margin-bottom: 28px; }
+    .section-header { flex-wrap: wrap; gap: 8px; }
+    .section-line { display: none; }
+    .grid-2, .grid-3, .grid-4 {
+      grid-template-columns: 1fr;
+    }
+    .card { padding: 14px 16px; }
+    footer {
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 16px 12px 24px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo-text { font-size: 13px; }
+    .hero h1 { font-size: 22px; }
   }
 </style>
 </head>
